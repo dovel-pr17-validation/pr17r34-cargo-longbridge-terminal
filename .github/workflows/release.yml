@@ -1,0 +1,230 @@
+name: Release
+on:
+  push:
+    branches:
+      - build-test
+    tags:
+      - "v*"
+
+jobs:
+  # Build sources for every OS
+  github_build:
+    name: Build release binaries
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: longbridge-terminal-linux-amd64.tar.gz
+            arch: x86_64
+            cross: false
+
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: longbridge-terminal-linux-arm64.tar.gz
+            arch: aarch64
+            cross: true
+
+          - target: x86_64-apple-darwin
+            os: macOS-latest
+            name: longbridge-terminal-darwin-amd64.tar.gz
+            arch: x86_64
+            cross: false
+
+          - target: aarch64-apple-darwin
+            os: macOS-latest
+            name: longbridge-terminal-darwin-arm64.tar.gz
+            arch: aarch64
+            cross: false
+
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            name: longbridge-terminal-windows-amd64.zip
+            arch: x86_64
+            cross: false
+
+          # Statically linked musl builds – these are the default for the
+          # Linux install script and work on any Linux system regardless of
+          # the glibc version present on the host.
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            name: longbridge-terminal-linux-musl-amd64.tar.gz
+            arch: x86_64
+            cross: false  # Compile natively on x86_64 runner with musl-tools
+
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+            name: longbridge-terminal-linux-musl-arm64.tar.gz
+            arch: aarch64
+            cross: true
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v4
+
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagName
+        with:
+          tagRegex: "v(?<version>.*)"
+
+      # Cache files between builds
+      - name: Setup | Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Musl Tools
+        if: contains(matrix.target, 'musl') && matrix.cross == false
+        run: |
+          sudo apt-get install -y musl-tools
+
+      - name: Install Cross
+        if: matrix.cross == true
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Setup | Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          targets: ${{ matrix.target }}
+
+      - name: Build | Build (cross)
+        if: matrix.cross == true
+        run: cross build --manifest-path Cargo.toml --release --target ${{ matrix.target }} --config 'package.version="${{ steps.tagName.outputs.version }}"'
+
+      - name: Build | Build (cargo)
+        if: matrix.cross == false
+        run: cargo build --manifest-path Cargo.toml --release --target ${{ matrix.target }} --config 'package.version="${{ steps.tagName.outputs.version }}"'
+
+      - name: Prepare artifacts [Windows]
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          strip longbridge.exe
+          7z a ../../../${{ matrix.name }} longbridge.exe
+          cd -
+
+      - name: Prepare artifacts [Linux & macOS]
+        if: matrix.os != 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          # TODO: investigate better cross platform stripping
+          strip longbridge || true
+          tar czvf ../../../${{ matrix.name }} longbridge
+          cd -
+
+      - name: Test Bin [Linux & macOS]
+        if: matrix.arch == 'x86_64' && matrix.os != 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          ./longbridge --version
+          cd -
+
+      - name: Test Bin [Windows]
+        if: matrix.arch == 'x86_64' && matrix.os == 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          ./longbridge.exe --version
+          cd -
+
+      - name: Deploy | Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: ${{ matrix.name }}
+
+  # Create GitHub release with Rust build targets and release notes
+  github_release:
+    name: Create GitHub Release
+    needs: github_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup | Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-dist
+
+      - name: Setup | Checksums
+        run: |
+          ls -lha release-dist
+          for file in release-dist/**/*; do openssl dgst -sha256 -r "$file" | awk '{print $1}' > "${file}.sha256"; done
+
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-dist/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Upload release artifacts to Aliyun OSS as backup
+  oss_backup:
+    name: Upload to Aliyun OSS
+    needs: github_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup | Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-dist
+          merge-multiple: true
+
+      - name: Verify | No unexpected subdirectories in release-dist
+        run: |
+          set -euo pipefail
+          subdirs=$(find release-dist -mindepth 1 -maxdepth 1 -type d)
+          if [ -n "$subdirs" ]; then
+            echo "ERROR: Unexpected subdirectories found in release-dist:"
+            echo "$subdirs"
+            exit 1
+          fi
+          echo "OK: release-dist contains only files (no subdirectories)."
+          ls -lha release-dist/
+
+      - name: Setup | ossutil
+        run: |
+          wget -q https://github.com/aliyun/ossutil/releases/download/v1.7.17/ossutil-v1.7.17-linux-amd64.zip
+          unzip -q ossutil-v1.7.17-linux-amd64.zip
+          cp ./ossutil-v1.7.17-linux-amd64/ossutil . && chmod +x ./ossutil
+
+      - name: Get version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to OSS
+        run: |
+          set -euo pipefail
+          ./ossutil cp ./release-dist/ \
+            oss://lb-assets/github/release/longbridge-terminal/v${{ steps.version.outputs.version }}/ \
+            -u -r -j 10 \
+            -e oss-cn-hangzhou.aliyuncs.com \
+            -i ${{ secrets.FE_LB_ASSET_ACCESS_KEY_ID }} \
+            -k ${{ secrets.FE_LB_ASSET_ACCESS_KEY_SECRET }}
+
+      - name: Update latest version file
+        run: |
+          set -euo pipefail
+          echo "v${{ steps.version.outputs.version }}" > latest
+          ./ossutil cp latest \
+            oss://lb-assets/github/release/longbridge-terminal/latest \
+            -f \
+            -e oss-cn-hangzhou.aliyuncs.com \
+            -i ${{ secrets.FE_LB_ASSET_ACCESS_KEY_ID }} \
+            -k ${{ secrets.FE_LB_ASSET_ACCESS_KEY_SECRET }} \
+            --meta "Cache-Control:no-cache#Content-Type:text/plain;charset=utf-8"
+

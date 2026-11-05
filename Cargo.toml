@@ -1,0 +1,141 @@
+[package]
+edition = "2021"
+name = "longbridge-terminal"
+version = "0.31.1"
+license = "Apache-2.0"
+
+[[bin]]
+name = "longbridge"
+path = "src/main.rs"
+
+[profile.release]
+debug = true               # Keep debug info for split-debuginfo packaging
+lto = true
+opt-level = 'z'
+panic = "abort"
+split-debuginfo = "packed" # Pack debug info into .pdb (Windows) or .dSYM (macOS)
+strip = "symbols"          # Strip all symbols from the final binary
+
+[dependencies]
+ansi-parser = "0.9.1"
+ansi-to-tui = "8.0.1"
+anyhow = "1.0"
+base64 = "0.22"
+bs58 = "0.5"
+arrayvec = "0.7"
+atomic = "0.6.0"
+bevy_app = "0.11"
+bevy_ecs = "0.11"
+bytemuck = { version = "1.14", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
+clap_complete = "4"
+tabled = "0.20"
+tar = "0.4"
+cli-candlestick-chart = { version = "0.26.0", path = "crates/cli-candlestick-chart", default-features = false }
+sec2md = { version = "0.26.0", path = "crates/sec2md" }
+crossterm = { version = "0.29", features = ["event-stream"] }
+dashmap = "6.1"
+dirs = "5.0"
+csv = "1"
+longbridge = "5.3.0"
+longbridge-ai-acp = { git = "https://github.com/longbridge/longbridge-ai-acp.git", branch = "main" }
+futures = "0.3.28"
+open = "5"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "gzip", "brotli"] }
+indoc = "2.0.4"
+itertools = "0.11.0"
+once_cell = "1.18.0"
+percent-encoding = "2"
+prost = "0.12"
+qrcode = { version = "0.12.0", default-features = false }
+ratatui = { version = "0.30", features = ["unstable-rendered-line-info"] }
+tui-markdown = "0.3"
+rust-i18n = "4"
+rust_decimal = "1.32.0"
+rust_decimal_macros = "1.32.0"
+scopeguard = "1.2.0"
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_json = "1.0"
+uuid = { version = "1", features = ["v4"] }
+log = "0.4"
+strum = { version = "0.26", features = ["derive"] }
+tempfile = "3"
+termimad = "0.30"
+time = { version = "0.3", features = ["formatting", "local-offset", "macros", "parsing"] }
+tokio = { version = "1.33.0", features = [
+    "io-std",
+    "io-util",
+    "macros",
+    "rt-multi-thread",
+    "sync",
+    "time",
+] }
+tokio-stream = "0.1"
+tracing = "0.1.40"
+tracing-appender = { version = "0.2.4" }
+# `tracing-log` routes `log` records into tracing. src/analytics/core.rs is
+# shared verbatim with the desktop app and reports through `log`, so that bridge
+# is what keeps its diagnostics -- notably "nothing was sent" -- in the log file.
+# It is on by default; listed anyway, because a default is not a contract.
+tracing-subscriber = { version = "0.3.17", features = [
+    "env-filter",
+    "parking_lot",
+    "time",
+    "tracing-log",
+] }
+tui-input = "0.15"
+unicode-width = "0.1.11"
+bitflags = "2.10.0"
+async-trait = "0.1"
+regex = "1.12.3"
+roxmltree = "0.20"
+flate2 = "1"
+aes-gcm = "0.10"
+hkdf = "0.12"
+machine-uid = "0.6"
+hostname = "0.4"
+sha2 = "0.10"
+whoami = "1.5"
+terminal-colorsaurus = "1.0.3"
+
+[dev-dependencies]
+mockall = "0.13"
+serial_test = "3"
+# `test-util` for the paused clock, so timeout behaviour can be tested without
+# tests that actually wait out the timeout.
+tokio = { version = "1.33.0", features = ["test-util"] }
+
+[features]
+integration = []
+
+[target.'cfg(target_family = "unix")'.dependencies]
+nix = { version = "0.27", default-features = false, features = ["fs"] }
+
+[target.'cfg(target_family = "windows")'.dependencies]
+windows-sys = { version = "0.48.0", features = [
+    "Win32_Foundation",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO",
+] }
+
+# `src/analytics/core.rs` is shared verbatim with the desktop app, where this
+# feature selects Tauri's runtime for background work. The terminal has no such
+# runtime and declares no such feature; naming it here keeps the shared file
+# from warning without adding a feature this binary would never use.
+[lints.rust.unexpected_cfgs]
+level = "warn"
+check-cfg = ['cfg(feature, values("tauri-runtime"))']
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+cast_possible_truncation = "allow"
+ignored_unit_patterns = "allow"
+implicit_hasher = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+needless_pass_by_value = "allow"
+pedantic = { level = "deny", priority = -1 }
+too_many_arguments = "allow"
+too_many_lines = "allow"

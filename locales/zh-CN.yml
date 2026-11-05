@@ -1,0 +1,572 @@
+---
+error:
+  general: "发生错误"
+  api:
+    heading: "请求失败"
+    content: "发起请求失败，请检查网络连接状况，退出应用后稍后再试"
+  session:
+    heading: "会话失效"
+    content: "用户登录状态失效，请退出重试"
+exit:
+  any_key: "按下任意键退出"
+  multi_instance: "检测到其他运行实例，请先关闭后再运行"
+my_quote:
+  title: "我的行情"
+  level: "行情等级"
+  member_id: "会员 ID"
+  col_package: "套餐"
+  col_start: "开始"
+  col_end: "到期"
+  subscribed: "已开通行情"
+  unsubscribed: "未开通行情"
+  no_data: "暂无数据"
+  qr_title: "购买行情套餐"
+  scan_hint: |
+    请用 Longbridge App 内「我的」Tab 中的点击扫码打开行情商城。
+    也可以在 App 内点击「我的」->「行情商店」直接进入。
+qrcode_view:
+  scan_hint: |
+    请使用长桥 iOS 或 Android app 扫描二维码
+    https://longbridge.hk/download
+  error:
+    heading: "生成二维码失败"
+    content: "请退出 app 后重试"
+  timeout:
+    heading: "二维码已失效"
+    content: "请退出 app 后重试"
+user:
+  open_account:
+    heading: "请开户"
+    content: "请在其他长桥应用上开户后使用"
+account:
+  type:
+    paper: "模拟账户"
+Prompt:
+  Esc: 按 ESC 键退出
+Candlestick:
+  Open: 开盘
+  Close: 收盘
+StockIndex:
+  .DJI.US: "道琼斯"
+  .IXIC.US: "纳斯达克"
+  SPY.US: "标普 ETF"
+  HSI.HK: "恒生指数"
+  HSCEI.HK: "国企指数"
+  HSTECH.HK: "恒生科技"
+  000001.SH: "上证指数"
+  399001.SZ: "深证成指"
+  399006.SZ: "创业板指"
+Please sign in: "请登陆"
+Scan the QR code to finish signing in: "扫描二维码以完成登录"
+Signing in...: "登录中..."
+"Please wait...": "请稍后..."
+Stock.SharesSuffix: "股"
+Console.Title: " Console "
+Update: " 更新 "
+Downloading: "下载中"
+tabs.Portfolio: 资产概览
+tabs.Watchlist: 自选列表
+Watchlist: 自选列表
+WebSocket Connected: "数据实时更新中"
+WebSocket Connecting: "实时更新中断"
+WebSocket Disconnected: "实时更新中断"
+Keyboard.Help: "帮助 [?]"
+Keyboard.Search: "股票 [/]"
+Keyboard.Quit: "退出 [^c]"
+Keyboard.OpenDetail: "选择 [o]"
+Keyboard.QRCode.Enter: "登录 [⏎]"
+Keyboard.SwitchChart: "切换图标 [⇥]"
+Keyboard.Scroll: 滚动 [↑↓]
+Keyboard.Console: 日志 [`]
+Keyboard.Buy: "买入 [b]"
+Keyboard.Sell: "卖出 [s]"
+Keyboard.Refresh: "刷新 [R]"
+Keyboard.CancelOrder: "撤单 [c]"
+Keyboard.ModifyOrder: "改单 [m]"
+Keyboard.DateFilter: "筛选 [f]"
+Keyboard.Account: "账户 [a]"
+Keyboard.Currency: "币种 [c]"
+Keyboard.Group: "分组 [g]"
+Keyboard.Layout: "布局 [t]"
+Keyboard.News: "资讯 [n]"
+Keyboard.NewsOpen: "打开 [o]"
+Keyboard.Settings: "设置 [,]"
+settings.title: "设置"
+settings.hint: "↑↓ 移动 · ←→ 切换 · Esc 关闭"
+settings.stock_color.label: "涨跌颜色"
+settings.stock_color.description: "用哪种颜色表示上涨。"
+settings.stock_color.red_up: "红涨绿跌"
+settings.stock_color.green_up: "绿涨红跌"
+settings.on: "开"
+settings.off: "关"
+settings.tool_calls.label: "工具调用"
+settings.tool_calls.description: "对话记录中保留哪些工具调用。"
+settings.tool_calls.all: "全部"
+settings.tool_calls.failures: "仅失败"
+settings.notify_on_finish.label: "完成提醒"
+settings.notify_on_finish.description: "回答生成完毕且窗口未聚焦时提醒。"
+settings.tape.label: "标题栏行情条"
+settings.tape.description: "在标题栏显示本次对话提到过的标的及其行情。"
+settings.quote_cards.label: "实时行情卡片"
+settings.quote_cards.description: "把回答引用的标的绘制成带实时行情的卡片。"
+"Welcome, %{name}": "欢迎，%{name}"
+stock counter id must be valid: "CounterID 不正确"
+watchlist.CHG: "涨跌幅"
+watchlist.CODE: "代码"
+watchlist.NAME: "名称"
+watchlist.PRICE: "价格"
+watchlist.STATUS: "状态"
+watchlist.VOL: "涨跌"
+watchlist_group.all: "所有"
+watchlist_group.holdings: "持仓"
+watchlist_group.us: "美股"
+watchlist_group.hk: "港股"
+watchlist_group.cn: "A股"
+watchlist_group.sg: "新加坡"
+watchlist_group.jp: "日本"
+watchlist_group.uk: "英国"
+watchlist_group.de: "德国"
+watchlist_group.na: "未上市"
+StockDetail.52wk High: 52 周高
+StockDetail.52wk Low: 52 周低
+StockDetail.Amplitude: 振幅
+StockDetail.Average: 均价
+StockDetail.BPS: 每股净资产
+StockDetail.Bid/Ask Ratio: 换手率
+StockDetail.Dividend (TTM): 股息 (TTM)
+StockDetail.Dividend Yield (TTM): 股息率 (TTM)
+StockDetail.EPS (Dynamic): 每股收益 (动)
+StockDetail.EPS (Static): 每股收益 (静)
+StockDetail.EPS (TTM): 每股收益 (TTM)
+StockDetail.Float Cap: 流通市值
+StockDetail.High: 最高
+StockDetail.Low: 最低
+StockDetail.Market Cap: 总市值
+StockDetail.Min lot size: 最小单位
+StockDetail.Open: 今开
+StockDetail.P/B: 市净率
+StockDetail.P/E (Dynamic): 市盈率 (动)
+StockDetail.P/E (Static): 市盈率 (静)
+StockDetail.P/E (TTM): 市盈率 (TTM)
+StockDetail.Prev. Close: 昨收
+StockDetail.Shares: 总股本
+StockDetail.Shares Float: 流通股本
+StockDetail.Trading Status: 交易状态
+StockDetail.Turnover: 成交额
+StockDetail.Turnover Ratio: 委比
+StockDetail.Volume: 成交量
+StockDetail.Volume Ratio: 量比
+Portfolio.Title: 资产总览
+Portfolio.Intraday P/L: 当日盈亏
+Portfolio.Cash Amount: 现金
+Portfolio.Total Asset: 总资产
+Portfolio.P/L: 持仓盈亏
+Portfolio.Market Cap: 持仓市值
+Portfolio.Margin Call: 应追缴保证金
+Portfolio.Risk Level: 风控状态
+Portfolio.Credit Limit: 融资额度
+Portfolio.Health Status: 杠杆
+Portfolio.Fund Market Cap: 基金市值
+Portfolio.No Holdings: 暂无持仓数据
+Portfolio.QuoteDisclaimer: "* 受 OpenAPI 夜盘行情权限影响，数据可能与手机端有出入"
+Holding.Code: 代码
+Holding.Cost Price: 成本价
+Holding.Hold Ratio: 占比%
+Holding.Holding: "持仓列表"
+Holding.Intraday P/L: 当日盈亏
+Holding.Intraday P/L%: 当日%
+Holding.Market Value: 市值
+Holding.Name: 名称
+Holding.P/L: 浮动盈亏
+Holding.P/L%: 浮动%
+Holding.Price: 最新价
+Holding.Quantity: 持仓量
+StockDepth:
+  Bid: "买盘"
+  Ask: "卖盘"
+StockQuoteTrades: "交易明细"
+CashBalance:
+  title: " 现金 "
+  total: 现金总额
+  Total: 总额
+  Avail. Balance: 可用现金
+  Cash Locked: 冻结现金
+  Cash Withdrawable: 现金可提
+StockAccount:
+  title: " 股票账户 "
+  Net Assets: 净资产
+  Intraday P/L: 当日盈亏
+  Mkt Value: 持仓市值
+  P/L: 浮动盈亏
+  Max Buying Power: 最大购买力
+  Avail. Balance: 可用现金
+  Cash Withdrawable: 现金可提
+  Cash Locked: 冻结现金
+SwitchAccount.title: 选择账号
+SwitchCurrency.title: 选择币种
+SwitchWatchlist.title: 选择自选列表分组
+SearchStock:
+  title: "查看股票（例如 AAPL.US）"
+StockDetail.not_found: "股票代码不存在"
+WatchlistSearch:
+  title: "搜索自选股票（代码 / 名称）"
+  invalid_format: "格式无效，请输入如 AAPL.US 的 symbol"
+TextInput:
+  placeholder: "输入想搜索的内容"
+TradeToken.title: 交易密码
+OptionUnit: " 张"
+LeverageStatus.Unused: 未使用
+LeverageStatus.Used: 已使用
+RiskLevel.Danger: 危险
+RiskLevel.Middle: 中等
+RiskLevel.Safe: 安全
+RiskLevel.Unknown: 未知
+RiskLevel.Warning: 预警
+TradeStatus.Normal: ""
+TradeStatus.Halted: 停牌
+TradeStatus.Delisted: 退市
+TradeStatus.Fuse: 熔断
+TradeStatus.PrepareList: 准备上市
+TradeStatus.CodeMoved: 代码变更
+TradeStatus.ToBeOpened: 即将开盘
+TradeStatus.SplitStockHalts: 分拆停牌
+TradeStatus.Expired: 已过期
+TradeStatus.WarrantPrepareList: 权证准备中
+TradeStatus.SuspendTrade: 暂停交易
+TradeSession.Intraday: 交易中
+TradeSession.Pre: 盘前
+TradeSession.Post: 盘后
+TradeSession.Overnight: 夜盘
+Help: " 帮助 "
+HelpTips: |-
+  - 通用 ---------------------------------------------------------------------------------
+
+    ?                               显示帮助信息
+    `                               切换调试日志面板
+    /                               打开股票搜索窗口
+    q, ESC                          关闭当前窗口，或返回上一个 Tab
+    Enter                           选择或确定
+    R                               手动刷新行情数据
+    ,                               打开设置
+
+  - 个股详情 -----------------------------------------------------------------------------
+
+    t                               展示或隐藏关注列表视图
+    TAB, Shift+TAB                  切换行情图表的时间间隔
+    h, Left Arrow, l, Right Arrow   切换蜡烛图的 K 线采样间隔
+
+  - 关注列表 -----------------------------------------------------------------------------
+
+    G                               切换关注列表分组
+    t                               展示或隐藏个股详情视图
+    n                               切换新闻列表，也可点击行情面板边框上的 News [n]
+    ESC                             退出新闻列表，也可点击边框上的 Back [esc]
+    o, ↗                            在 longbridge.com 打开选中的文章
+    j, Up Arrow, k, Down Arrow      上下切换关注列表项目 / 滚动新闻
+
+  - 资产总览 -----------------------------------------------------------------------------
+
+    a                               多账户之前切换（如有）
+    c                               切换展示币种
+    j, Up Arrow, k, Down Arrow      上下切换持仓列表或其他列表的选中项
+    Enter, 点击                     展示详情面板（ESC 关闭）
+
+  - 订单 ---------------------------------------------------------------------------------
+
+    c                               撤销选中的订单
+    m                               修改选中的订单
+    f                               设置历史订单日期范围
+    TAB                             在今日与历史订单之间切换
+    点击                            展示详情面板（ESC 关闭）
+
+Tab:
+  Quote: "行情"
+  News: "新闻"
+News:
+  Title: "新闻"
+  BackKey: "返回 [esc]"
+  Empty: "暂无新闻"
+  Detail: "文章"
+  DetailEmpty: "选择一篇文章来阅读"
+  DetailHint: "↑↓ 切换文章 · PgUp/PgDn 或滚轮 滚动 · o / ↗ 浏览器打开 · q 返回"
+  ErrorContent: "读取内容失败：%{error}"
+  ErrorHttp: "加载新闻失败（HTTP %{status}）"
+  ErrorFetch: "加载新闻失败：%{error}"
+Error.KlineDataFormat: "K 线数据格式错误"
+Currency.HKD: "港币"
+Currency.USD: "美元"
+Currency.CNY: "人民币"
+tabs.Orders: 订单
+Orders.TodayTab: "当日"
+Orders.HistoryTab: "历史"
+Orders.NoOrders: "今日暂无订单"
+Orders.NoHistoryOrders: "该时间段内无历史订单"
+Orders.Symbol: "代码"
+Orders.Side: "方向"
+Orders.Type: "类型"
+Orders.Status: "状态"
+Orders.Qty: "数量"
+Orders.ExecQty: "成交量"
+Orders.Price: "价格"
+Orders.SubmittedAt: "时间"
+Orders.Date: "日期"
+Orders.Refresh: "R [刷新]"
+Orders.CancelKey: "c [撤单]"
+Orders.ReplaceKey: "m [改单]"
+Orders.TabSwitch: "Tab [切换当日/历史]"
+Orders.FilterKey: "f [日期筛选]"
+Orders.DateFilterTitle: "历史订单日期范围"
+Orders.DateFilterSwitch: "切换字段"
+Orders.DateFilterApply: "确认"
+Orders.StartDate: "开始"
+Orders.EndDate: "结束"
+Orders.DateHint: "格式：YYYY-MM-DD"
+Detail.Title: "详情"
+Detail.Position: "持仓"
+Detail.Performance: "盈亏"
+Detail.Order: "订单"
+Detail.Execution: "成交"
+Detail.Timing: "时间"
+Detail.CloseKey: "[esc] 关闭"
+Detail.Quantity: "持仓数量"
+Detail.Available: "可用数量"
+Detail.CostPrice: "成本价"
+Detail.LastPrice: "最新价"
+Detail.MarketValue: "市值"
+Detail.ValueUSD: "市值（美元）"
+Detail.PrevClose: "昨收"
+Detail.IntradayPL: "当日盈亏"
+Detail.IntradayPLPct: "当日盈亏%"
+Detail.TotalPL: "浮动盈亏"
+Detail.TotalPLPct: "浮动盈亏%"
+Detail.Currency: "币种"
+Detail.FilledQty: "成交数量"
+Detail.FilledPrice: "成交价"
+Detail.LastDone: "最新价"
+Detail.TriggerPrice: "触发价"
+Detail.TimeInForce: "有效期"
+Detail.SubmittedAt: "提交时间"
+Detail.UpdatedAt: "更新时间"
+Detail.OrderId: "订单号"
+Detail.Remark: "备注"
+Detail.CancelKey: "[c] 撤单"
+Detail.ModifyKey: "[m] 改单"
+Detail.QuoteKey: "[⏎] 行情"
+Trade.Buy: "买入"
+Trade.Sell: "卖出"
+Trade.BuyKey: "[b] 买入"
+Trade.SellKey: "[s] 卖出"
+Trade.PlaceOrder: "委托下单"
+Trade.Submit: "提交"
+Trade.Cancel: "取消"
+Trade.Confirm: "确认委托？"
+Trade.Yes: "y [确认]"
+Trade.No: "n [取消]"
+Trade.SelectHint: "选择"
+Trade.FillPrice: "填入当前价"
+Trade.MaxQty: "最大"
+Trade.AvailableQty: "可用"
+Trade.OrderSubmitted: "委托已提交"
+Trade.OrderCancelled: "委托已撤销"
+Trade.OrderReplaced: "委托已修改"
+Trade.FailedLoadOrders: "加载订单失败"
+Trade.FailedLoadHistoryOrders: "加载历史订单失败"
+Trade.NoOrderSelected: "没有选中订单"
+Trade.OrderNotCancellable: "该订单无法撤销"
+Trade.OrderNotReplaceable: "该订单无法改单"
+CancelOrder.Title: "撤单确认"
+CancelOrder.Order: "委托号"
+CancelOrder.Symbol: "代码"
+CancelOrder.Qty: "数量"
+CancelOrder.Price: "价格"
+CancelOrder.Side: "方向"
+CancelOrder.Confirm: "[Enter] 确认撤单"
+CancelOrder.Cancel: "[Esc] 取消"
+ReplaceOrder.Title: "改单"
+ReplaceOrder.OrderId: "委托号"
+ReplaceOrder.NewQty: "新数量"
+ReplaceOrder.NewPrice: "新价格"
+ACP.AuthenticationFailed: "认证失败"
+ACP.LoginRequired: "需要认证。请运行 `longbridge auth login`，然后重启 ACP agent。"
+Agent:
+  Thinking: "思考中…"
+  CallingTool: "调用工具：%{name}"
+  ToolDone: "工具完成：%{name}（%{status}）"
+  Generating: "生成回答中…"
+  References: "参考来源"
+  FurtherQuestions: "推荐追问"
+  Interrupted: "Agent 需要补充信息："
+  InterruptedAnswerHint: "在下方输入你的回答以继续。"
+  InterruptedUnreadable: "Agent 没有说明需要什么信息。你的下一条消息将继续这个对话。"
+  TradePasswordUnsupported: "当前客户端无法支持交易密码验证，暂时无法完成此流程。"
+  ExternalAuthorizationUnsupported: "当前客户端暂时无法完成此外部授权流程。"
+  ContinueWith: "续答命令："
+  FollowUpWith: "续聊命令："
+  Elapsed: "耗时 %{secs}s"
+  Tokens: "%{total} tokens"
+  PartialAnswer: "警告：流中断，以下为已接收的部分回答"
+  Reconnecting: "连接中断，正在重新连接…"
+  RunFailed: "本次运行未能成功完成"
+  StreamDropped: "Agent 运行中断：流在运行完成前断开"
+
+Ai:
+  Title: "LongbridgeAI"
+  You: "你"
+  Assistant: "LongbridgeAI"
+  Welcome: "向 LongbridgeAI 提问：行情、报价、财报或你的持仓。"
+  InputHint: "Enter：发送 · Shift+Enter：换行 · 输入 / 唤出命令 · /help 查看更多"
+  Cancelled: "（已取消）"
+  ErrorPrefix: "错误"
+  NoAnswer: "（智能体未返回答案）"
+  NoAnswerToolsFailed: "（无答案 —— 以下工具调用失败：%{tools}）"
+  TabSessions: "对话"
+  TabSettings: "设置"
+  SessionsHint: "回车/点击继续 · 输入即搜索 · Shift+↑↓ 首/末行 · Esc：清空 / 返回"
+  SessionsEmpty: "还没有已保存的对话。"
+  SessionsNoMatch: "没有匹配搜索的对话。"
+  SessionsSignedOut: "登录后可查看历史对话。"
+  SessionsError: "加载对话列表失败 —— 请检查网络后重新打开。"
+  SettingsHint: "Enter/空格/点击 切换设置 · Shift+↑↓ 首/末项 · Esc 返回"
+  NewChat: "开始新对话"
+  UntitledSession: "未命名对话"
+  QuestionHint: "点击选项作答 · X：跳过 · Esc：改为手动输入答案"
+  AuthorizationPrompt: "允许执行此操作吗？"
+  AuthorizationToolPrompt: "允许 %{name} 吗？"
+  Decline: "拒绝"
+  Allow: "允许"
+  ConfirmSelection: "确认选择"
+  SkipQuestion: "跳过"
+  SlashNew: "开始新对话"
+  SlashRetry: "重新生成上一条回答"
+  RetryBusy: "请等当前回答生成完"
+  NothingToRetry: "还没有可重新生成的内容"
+  SlashResume: "恢复之前的对话"
+  SlashSettings: "打开设置"
+  SlashAgent: "切换智能体 —— /agent <agent-id> · /agent reset"
+  SlashHelp: "显示可用命令"
+  SlashCopy: "复制上一条回答"
+  SlashDebug: "复制诊断报告，用于排查问题"
+  NothingToCopy: "还没有可复制的回答"
+  SlashExit: "退出 LongbridgeAI"
+  CommandsTitle: "命令"
+  ChatsButton: "会话"
+  CloseButton: "关闭"
+  BackHint: "按 Esc 返回"
+  WindowTooSmall: "终端窗口太小"
+  JustNow: "刚刚"
+  ScrolledHint: "▲ 已上滚 · PgDn 回到最新"
+  PastedOne: "已粘贴 %{lines} 行 · Backspace 移除"
+  PastedMany: "%{count} 段粘贴共 %{lines} 行 · Backspace 移除"
+  FindLabel: "查找"
+  FindNone: "无匹配"
+  NewSessionAction: "新建对话"
+  SessionsLoading: "正在加载对话……"
+  SessionLoading: "正在加载对话……"
+  Sample1: "TQQQ 今年表现如何？"
+  Sample2: "我的持仓今天表现怎么样？"
+  Sample3: "恒生指数后市怎么看？"
+  EmptyHint: "输入问题开始,或按 / 查看命令"
+  Placeholder: "问点什么，或按 / 唤出命令"
+  SlashExport: "导出对话到文件"
+  Exported: "已导出到 %{path}"
+  ExportFailed: "导出失败。"
+  ToolFailed: "失败"
+  ToolCount: "%{count} 个工具"
+  ThoughtFor: "已思考 %{secs} 秒"
+  NoUpdatesFor: "已 %{secs} 秒无更新"
+  Stop: "停止"
+  CustomAgent: "自定义智能体"
+  WidgetComparison: "对比"
+  WidgetStockList: "标的"
+  WidgetOrderTicket: "委托单"
+  WidgetOrderDetail: "委托编号"
+  WidgetCta:
+    open_account: "开户"
+    fund_account: "入金"
+    complete_profile: "完善资料"
+  SlashQuote: "查看标的实时行情"
+  SlashLogin: "登录 Longbridge"
+  SlashLogout: "退出登录"
+  Account: "账户"
+  SessionValid: "已登录"
+  SessionRefreshing: "刷新中"
+  SessionExpired: "登录已过期"
+  SessionUnreadable: "凭证无法读取"
+  SessionNone: "未登录"
+  SessionExpires: "有效期"
+  SignOut: "退出登录"
+  SignOutHint: "清除本机凭证并退出对话。"
+  SignOutConfirm: "再按一次 Enter 确认退出登录。"
+  SignIn: "登录"
+  SignInHint: "打开浏览器授权此终端。"
+  LoginBrowserOpened: "已打开浏览器，在那里授权即可完成登录（链接也已复制到剪贴板）。"
+  LoginOpenUrl: "打开这个地址完成授权（已复制到剪贴板）："
+  LoginCode: "验证码"
+  LoginWaiting: "等待授权…"
+  LoginCancelled: "已取消登录。"
+  SignInToAsk: "登录后即可提问 —— 输入 /login，或打开 /settings"
+  SignedOut: "已退出登录。输入 `/login` 可重新登录。"
+  SignedIn: "已登录。运行 `longbridge ai` 开始对话。"
+  SignOutFailed: "退出登录失败"
+  SignInFailed: "登录失败"
+  QuoteNoSymbol: "还没有提到标的，试试 /quote 700.HK"
+  QuoteBadSymbol: "请带上市场，例如 /quote AAPL.US"
+  TapeToggle: "行情"
+  QuoteLoading: "正在获取行情…"
+  QuotePrevClose: "昨收"
+  QuoteAt: "更新于"
+  QuoteOpen: "开"
+  QuoteHigh: "高"
+  QuoteLow: "低"
+  QuoteVolume: "量"
+  QuoteTurnover: "额"
+  QuoteAvg: "均价"
+  QuoteAmplitude: "振幅"
+  QuoteTurnoverRate: "换手"
+  QuoteVolumeRatio: "量比"
+  QuotePeTtm: "市盈"
+  QuotePb: "市净"
+  QuoteMarketCap: "市值"
+  QuoteEps: "每股收益"
+  QuoteBps: "每股净资"
+  CopyFailed: "复制到剪贴板失败。"
+  Copied: "已复制到剪贴板。"
+  NothingToExport: "暂无可导出的内容。"
+  NothingToCopy: "暂无可复制的内容。"
+  PressCtrlCAgain: "再按一次 Ctrl+C 退出。"
+  NotifyDone: "LongbridgeAI 已回复完成"
+  AgentUsage: "用法：/agent <agent-id> · /agent reset"
+  AgentSwitched: "已切换智能体 —— 开始新对话。"
+  AgentUnchanged: "无变化 —— 当前已在使用该智能体。"
+  AgentReset: "已切回 LongbridgeAI。"
+  Help: "帮助"
+  HelpCommands: "命令"
+  HelpKeys: "快捷键"
+  HelpSend: "发送"
+  HelpNewline: "换行"
+  HelpComplete: "补全命令"
+  HelpHistory: "上一条 / 下一条输入"
+  HelpScroll: "滚动对话"
+  HelpJump: "跳到顶部 / 最新"
+  HelpWordMove: "按词移动"
+  HelpFollowUp: "发送建议追问"
+  HelpFind: "在对话中查找"
+  HelpUndo: "撤销 / 重做上一次编辑"
+  HelpResume: "打开历史对话"
+  HelpLineEdit: "行内移动 / 删除"
+  HelpEscape: "中断回答，或清空输入"
+  HelpSelect: "选中并复制（词/行）"
+  HelpQuit: "退出"
+SymbolHint:
+  NoData: "“%{symbol}” 存在，但没有返回数据。如果它所在的市场没有行情权限，可以用 longbridge auth status 查看"
+  DidYouMean: "“%{symbol}” 没有数据。你是不是要找 %{suggestions}？"
+  Unknown: "没有找到 “%{symbol}”。请使用带市场后缀的股票代码，而不是公司名，例如 TSLA.US、700.HK、.DJI.US"
+  Unchecked: "“%{symbol}” 没有数据。代码需要带市场后缀，例如 TSLA.US、700.HK、.DJI.US"
+ScopeGuidance:
+  Trading: |-
+    此命令需要交易类权限（“账户资产与资金明细查询”“交易查询”或“交易下单”），当前授权未包含。
+    授权方法：运行 `longbridge auth login`，在授权页勾选对应权限。
+    如果授权页没有这些选项，说明账户尚未开通证券账户，请先在长桥 App 中开户。
+  Watchlist: |-
+    此命令需要“自选列表”权限，当前授权未包含。
+    授权方法：运行 `longbridge auth login`，在授权页勾选“自选列表”。

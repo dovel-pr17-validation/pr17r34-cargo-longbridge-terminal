@@ -1,0 +1,160 @@
+name: Update Homebrew Tap
+
+on:
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v0.8.0). Leave empty to use the latest release."
+        required: false
+        type: string
+
+jobs:
+  update-homebrew:
+    name: Push to homebrew-tap main
+    runs-on: ubuntu-latest
+    # For workflow_run: only run after a successful tag release (not branch builds)
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        startsWith(github.event.workflow_run.head_branch, 'v')
+      )
+
+    steps:
+      - name: Resolve release tag
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.tag }}" ]; then
+              TAG="${{ inputs.tag }}"
+            else
+              TAG=$(gh release view --repo "${{ github.repository }}" --json tagName -q .tagName)
+            fi
+          else
+            TAG="${{ github.event.workflow_run.head_branch }}"
+          fi
+          VERSION="${TAG#v}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Download release artifacts and compute SHA256
+        id: checksums
+        run: |
+          BASE_URL="https://github.com/${{ github.repository }}/releases/download/${{ steps.version.outputs.tag }}"
+
+          for PLATFORM in darwin-amd64 darwin-arm64; do
+            FILE="longbridge-terminal-${PLATFORM}.tar.gz"
+            URL="${BASE_URL}/${FILE}"
+
+            # Retry up to 5 times; release assets may not be immediately available
+            for i in {1..5}; do
+              if curl -fsSL --retry 3 -o "/tmp/${FILE}" "${URL}"; then
+                break
+              fi
+              echo "Attempt $i failed for ${FILE}, retrying in 15s..."
+              sleep 15
+            done
+
+            SHA=$(sha256sum "/tmp/${FILE}" | awk '{print $1}')
+            KEY="${PLATFORM//-/_}_sha256"
+            echo "${KEY}=${SHA}" >> "$GITHUB_OUTPUT"
+            echo "${PLATFORM}: ${SHA}"
+          done
+
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v4
+        with:
+          repository: longbridge/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: homebrew-tap
+
+      - name: Update formula
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+          DARWIN_AMD64_SHA256: ${{ steps.checksums.outputs.darwin_amd64_sha256 }}
+          DARWIN_ARM64_SHA256: ${{ steps.checksums.outputs.darwin_arm64_sha256 }}
+          REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PYEOF'
+          import os, textwrap
+
+          formula_path = "homebrew-tap/Casks/longbridge-terminal.rb"
+          version  = os.environ["VERSION"]
+          tag      = os.environ["TAG"]
+          repo     = os.environ["REPO"]
+          base_url = f"https://github.com/{repo}/releases/download/{tag}"
+
+          arm64_url  = f"{base_url}/longbridge-terminal-darwin-arm64.tar.gz"
+          amd64_url  = f"{base_url}/longbridge-terminal-darwin-amd64.tar.gz"
+          arm64_sha  = os.environ["DARWIN_ARM64_SHA256"]
+          amd64_sha  = os.environ["DARWIN_AMD64_SHA256"]
+
+          content = textwrap.dedent(f"""\
+            cask "longbridge-terminal" do
+              version "{version}"
+
+              on_arm do
+                url "{arm64_url}"
+                sha256 "{arm64_sha}"
+              end
+
+              on_intel do
+                url "{amd64_url}"
+                sha256 "{amd64_sha}"
+              end
+
+              desc "Longbridge Terminal CLI for US and HK stock market data and trading"
+              homepage "https://github.com/longbridge/longbridge-terminal"
+
+              binary "longbridge"
+
+              postflight do
+                system_command "/usr/bin/xattr",
+                  args: ["-dr", "com.apple.quarantine", staged_path]
+              end
+
+              caveats <<~EOS
+                Get started by running:
+                  longbridge -h
+              EOS
+            end
+          """)
+
+          with open(formula_path, "w") as f:
+              f.write(content)
+
+          print("Formula written successfully")
+          PYEOF
+
+          echo "--- Updated formula ---"
+          cat homebrew-tap/Casks/longbridge-terminal.rb
+
+      - name: Commit and push to main
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          cd homebrew-tap
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add Casks/longbridge-terminal.rb
+
+          if git diff --cached --quiet; then
+            echo "No changes detected — formula is already up to date"
+            exit 0
+          fi
+
+          git commit -m "chore: bump longbridge-terminal to ${VERSION}
+
+          Automated version bump triggered by https://github.com/${REPO}/actions/runs/${RUN_ID}"
+          git push origin main

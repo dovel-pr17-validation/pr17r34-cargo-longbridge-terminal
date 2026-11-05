@@ -1,0 +1,10 @@
+/target
+.env
+*.log
+.DS_Store
+docs/
+.claude/
+.worktrees/
+
+# superpowers scratch/specs — never commit
+docs/superpowers/

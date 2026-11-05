@@ -1,0 +1,5 @@
+Longbridge Terminal (v%{version})
+https://longbridge.com
+
+© 2023 - %{year}, Longbridge.
+All rights reserved.
